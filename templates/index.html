@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
-    <title>KSM - Main</title>
-</head>
-<body>
-    <h1 class="title">KSM Panel</h1>
+{% extends "base.html" %}
 
-</body>
-</html>
+
+{% block main %}
+
+    {% for instance in instances %}
+        <p>{{ instance["instance_name"] }}</p>
+        <p>{{ instance["instance_state"] }}</p>
+        <a href="instance/{{ instance['instance_id'] }}">Select</a>
+    {% endfor %}
+
+{% endblock %}

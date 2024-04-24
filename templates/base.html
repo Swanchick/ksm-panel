@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+    {% block stylesheets %}
+    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1 class="title">KSM Panel</h1>
+
+    <div class="main">
+        {% block main %}
+        {% endblock %}
+    </div>
+</body>
+</html>
