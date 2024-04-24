@@ -11,12 +11,10 @@ instance_connector = InstanceConnector("127.0.0.1:52146")
 def index():
     response = instance_connector.get_instances("12345678", "debug")
 
-    print(response)
-
     return render_template("index.html", instances=response["instances"])
 
 
-@app.route("/instance/<instance_id>")
+@app.route("/instance/<instance_id>/")
 def instance(instance_id: int):
     return render_template("instance.html")
 

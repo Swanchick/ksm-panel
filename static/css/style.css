@@ -4,6 +4,14 @@
 
 .main {
     margin: auto;
-    width: 50%;
+    width: 60%;
 }
 
+.instance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}

@@ -5,7 +5,7 @@
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
     {% block stylesheets %}
     {% endblock %}
-    <title>{% block title %}{% endblock %}</title>
+    <title>KSM - {% block title %}{% endblock %}</title>
 </head>
 <body>
     <h1 class="title">KSM Panel</h1>
@@ -14,5 +14,9 @@
         {% block main %}
         {% endblock %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

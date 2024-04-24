@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 
+{% block title %}Main{% endblock %}
+
 
 {% block main %}
 
     {% for instance in instances %}
-        <p>{{ instance["instance_name"] }}</p>
-        <p>{{ instance["instance_state"] }}</p>
-        <a href="instance/{{ instance['instance_id'] }}">Select</a>
+        <div class="instance">
+            <div>
+                <p>{{ instance["instance_name"] }}</p>
+                {% if instance["instance_state"] == 1 %}
+                    <p>State: disabled</p>
+                {% else %}
+                    <p>State: activated</p>
+                {% endif %}
+            </div>
+            <a href="instance/{{ instance['instance_id'] }}/">Select</a>
+        </div>
     {% endfor %}
 
 {% endblock %}
