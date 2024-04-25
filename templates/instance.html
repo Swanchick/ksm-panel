@@ -7,6 +7,9 @@
 {% block title %}Instance{% endblock %}
 
 {% block main %}
+    <input type="hidden" id="instance_id" value="{{ instance_data["instance_id"] }}">
+    <input type="hidden" id="instance_state" value="{{ instance_data["instance_state"] }}">
+
     <div class="menus">
         <a href="/">Close</a>
         <a href="#">Instance</a>
@@ -17,23 +20,26 @@
     <div class="main-instance">
         <div class="console">
             <div class="console-output">
-                <div class="outputs">
-                    {% for i in range(20) %}
-                        <p>{{ i }}. Test output</p>
-                    {% endfor %}
+                <div class="outputs" id="outputs">
+
                 </div>
             </div>
 
             <label class="console-input-vertical">
                 <input class="console-input" id="console-input" type="text">
+                <button class="console-submit" id="console-load" type="submit">Load</button>
                 <button class="console-submit" id="console-submit" type="submit">Send</button>
             </label>
         </div>
 
         <div class="control">
             <div>
-                <h1>Instance Name</h1>
-                <h2>instance state</h2>
+                <h1>{{ instance_data["instance_name"] }}</h1>
+                {% if instance_data["instance_state"] == 1 %}
+                    <h2>Instance state: Disabled</h2>
+                {% else %}
+                    <h2>Instance state: Activated</h2>
+                {% endif %}
             </div>
 
             <div class="buttons">

@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+import requests.cookies
+from flask import Flask, render_template, jsonify, request, redirect
 from requests import post
 
 from instance.instance_connector import InstanceConnector
@@ -16,7 +17,32 @@ def index():
 
 @app.route("/instance/<instance_id>/")
 def instance(instance_id: int):
-    return render_template("instance.html")
+    response = instance_connector.get_instance("12345678", "debug", int(instance_id))
+
+    print(response)
+
+    return render_template("instance.html", instance_data=response["instance_data"])
+
+
+@app.route("/instance/<instance_id>/call/get_output/")
+def instance_get_last_output(instance_id: int):
+    response = instance_connector.get_output("12345678", "debug", int(instance_id))
+
+    return response
+
+
+@app.route("/instance/<instance_id>/call/start_server/")
+def instance_start_server(instance_id: int):
+    response = instance_connector.start_instance("12345678", "debug", int(instance_id))
+
+    return response
+
+
+@app.route("/instance/<instance_id>/call/stop_server/")
+def instance_stop_server(instance_id: int):
+    response = instance_connector.stop_instance("12345678", "debug", int(instance_id))
+
+    return response
 
 
 if __name__ == "__main__":
