@@ -30,6 +30,28 @@ class InstanceConnector(Connector):
             "get_output"
         )
 
+    def get_last_output(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
+        return self.send(
+            engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id},
+            "instance",
+            "call",
+            "get_last_output"
+        )
+
+    def send_command(self, engine_password: str, user_key: str, instance_id: int, command: str) -> Dict:
+        return self.send(
+            engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [command]},
+            "instance",
+            "call",
+            "server_send"
+        )
+
     def start_instance(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
         return self.send(
             engine_password,

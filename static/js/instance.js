@@ -1,16 +1,4 @@
-$("#console-load").click((event) => {
-    let output_panel = $("#outputs");
-    let instance_id = $("#instance_id").val();
-
-    let outputs = output_panel.children();
-
-    for (let i = 0; i < outputs.length; i++) {
-        let output = outputs[i];
-        output.removeChild()
-    }
-
-    createOutput(instance_id);
-})
+let last_output = "";
 
 $("#console-submit").click((event) => {
     let command = $("#console-input").val();
@@ -19,7 +7,14 @@ $("#console-submit").click((event) => {
         return;
     }
 
-    console.log(command);
+    let instance_id = $("#instance_id").val();
+
+    $.ajax({
+        url: "/instance/" + instance_id + "/call/server_send/",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({command: command}),
+    })
 })
 
 $("#start-server").click((event) => {
@@ -46,24 +41,35 @@ $("#stop-server").click((event) => {
     })
 })
 
-function createOutput(instance_id){
+function createLastOutput(instance_id){
     $.ajax({
-        url: "/instance/" + instance_id + "/call/get_output/",
+        url: "/instance/" + instance_id + "/call/get_last_output/",
         type: "GET",
         success: (response) => {
-            let output_panel = $("#outputs");
-            let outputs = response["instance"]["output"];
-
-            for (let i = 0; i < outputs.length; i++){
-                let output_text = outputs[i];
-
-                console.log(output_text);
-                let output = document.createElement("p");
-                let node = document.createTextNode(output_text);
-                output.appendChild(node);
-                output_panel.append(output)
+            let output_text = response["instance"]["output"];
+            if (last_output === output_text){
+                return
             }
+            last_output = output_text;
+
+            let output_panel = $("#outputs");
+            let output = document.createElement("p");
+            let output_node = document.createTextNode(output_text);
+            output.appendChild(output_node)
+            output_panel.append(output);
         }
     })
-
 }
+
+function updateState(){
+    let instance_id = $("#instance_id").val();
+    let instance_state = $("#instance_state").val();
+
+    if (instance_state === "1") {
+        return
+    }
+
+    createLastOutput(instance_id);
+}
+
+setInterval(updateState, 1000)
