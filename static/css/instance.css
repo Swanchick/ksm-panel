@@ -29,6 +29,10 @@
     margin-right: 50px;
 }
 
+.outputs p {
+    word-wrap: break-word;
+}
+
 .console-input {
     width: 100%;
     font-size: 18px;

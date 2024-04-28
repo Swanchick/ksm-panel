@@ -1,17 +1,19 @@
 import requests.cookies
 from flask import Flask, render_template, jsonify, request, redirect
-from requests import post
 
 from instance.instance_connector import InstanceConnector
 
 app = Flask(__name__)
 
 instance_connector = InstanceConnector("127.0.0.1:52146")
+instance_connector.connect("12345678")
 
 
 @app.route("/")
 def index():
     response = instance_connector.get_instances("12345678", "debug")
+
+    instances = response["instances"] if response is not None else []
 
     return render_template("index.html", instances=response["instances"])
 
