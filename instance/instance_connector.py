@@ -36,7 +36,19 @@ class InstanceConnector(Connector):
 
         return response
 
-    def get_last_output(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+    def get_permissions(self, engine_password: str, user_key: str) -> Optional[Dict]:
+        response = self.send(
+            engine_password,
+            user_key,
+            "instance_data",
+            {},
+            "permission",
+            "get"
+        )
+
+        return response
+
+    def get_user_permissions(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
             engine_password,
             user_key,
@@ -44,7 +56,7 @@ class InstanceConnector(Connector):
             {"instance_id": instance_id},
             "instance",
             "call",
-            "get_last_output"
+            "get_permissions"
         )
 
         return response

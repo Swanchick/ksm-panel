@@ -1,7 +1,5 @@
-import requests.cookies
 from flask import Flask, render_template, jsonify, request, redirect
-
-from instance.instance_connector import InstanceConnector
+from instance import InstanceConnector, InstancePermission
 
 app = Flask(__name__)
 
@@ -12,29 +10,34 @@ instance_connector.connect("12345678")
 @app.route("/")
 def index():
     response = instance_connector.get_instances("12345678", "debug")
-
     instances = response["instances"] if response is not None else []
 
-    return render_template("index.html", instances=response["instances"])
+    return render_template("index.html", instances=instances)
 
 
 @app.route("/instance/<instance_id>/")
 def instance(instance_id: int):
     response = instance_connector.get_instance("12345678", "debug", int(instance_id))
 
-    return render_template("instance.html", instance_data=response["instance_data"])
+    return render_template("instance/instance.html", instance_data=response["instance_data"])
+
+
+@app.route("/instance/<instance_id>/permissions/")
+def instance_permission(instance_id: int):
+    user_permissions = instance_connector.get_user_permissions("12345678", "debug", int(instance_id))
+    permissions = instance_connector.get_permissions("12345678", "debug")
+
+    instance_permission = InstancePermission(user_permissions["users"], permissions["permissions"])
+
+    return render_template(
+        "instance/permissions.html",
+        permissions=instance_permission.get_user_permissions()
+    )
 
 
 @app.route("/instance/<instance_id>/call/get_output/")
 def instance_get_output(instance_id: int):
     response = instance_connector.get_output("12345678", "debug", int(instance_id))
-
-    return response
-
-
-@app.route("/instance/<instance_id>/call/get_last_output/")
-def instance_get_last_output(instance_id: int):
-    response = instance_connector.get_last_output("12345678", "debug", int(instance_id))
 
     return response
 
