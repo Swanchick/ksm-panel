@@ -1,16 +1,18 @@
 from utils import Connector
-from typing import Dict
+from typing import Dict, Optional
 
 
 class InstanceConnector(Connector):
     def __init__(self, host: str):
         super().__init__(host, "instance")
 
-    def get_instances(self, engine_password: str, user_key: str) -> Dict:
-        return self.send(engine_password, user_key, "instance_data", {}, "instance", "get")
+    def get_instances(self, engine_password: str, user_key: str) -> Optional[Dict]:
+        response = self.send(engine_password, user_key, "instance_data", {}, "instance", "get")
 
-    def get_instance(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
-        return self.send(
+        return response
+
+    def get_instance(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+        response = self.send(
             engine_password,
             user_key,
             "instance_data",
@@ -19,8 +21,10 @@ class InstanceConnector(Connector):
             "get_instance"
         )
 
-    def get_output(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
-        return self.send(
+        return response
+
+    def get_output(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+        response = self.send(
             engine_password,
             user_key,
             "instance_data",
@@ -30,8 +34,10 @@ class InstanceConnector(Connector):
             "get_output"
         )
 
-    def get_last_output(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
-        return self.send(
+        return response
+
+    def get_last_output(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+        response = self.send(
             engine_password,
             user_key,
             "instance_data",
@@ -41,8 +47,10 @@ class InstanceConnector(Connector):
             "get_last_output"
         )
 
-    def send_command(self, engine_password: str, user_key: str, instance_id: int, command: str) -> Dict:
-        return self.send(
+        return response
+
+    def send_command(self, engine_password: str, user_key: str, instance_id: int, command: str) -> Optional[Dict]:
+        response = self.send(
             engine_password,
             user_key,
             "instance_data",
@@ -52,8 +60,10 @@ class InstanceConnector(Connector):
             "server_send"
         )
 
-    def start_instance(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
-        return self.send(
+        return response
+
+    def start_instance(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+        response = self.send(
             engine_password,
             user_key,
             "instance_data",
@@ -63,8 +73,10 @@ class InstanceConnector(Connector):
             "server_start"
         )
 
-    def stop_instance(self, engine_password: str, user_key: str, instance_id: int) -> Dict:
-        return self.send(
+        return response
+
+    def stop_instance(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+        response = self.send(
             engine_password, 
             user_key,
             "instance_data",
@@ -73,4 +85,6 @@ class InstanceConnector(Connector):
             "call",
             "server_stop"
         )
+
+        return response
 

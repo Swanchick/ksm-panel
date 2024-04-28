@@ -1,10 +1,12 @@
 from requests import post
-from typing import Tuple, Dict
+from typing import Tuple, Dict, Optional
+from abc import ABC
 
 
-class Connector:
+class Connector(ABC):
     __host: str
     __route: str
+    _connected: bool
 
     def __init__(self, host: str, route: str):
         self.__host = host
@@ -13,10 +15,30 @@ class Connector:
     def __build_route(self, methods: Tuple[str, ...]):
         return f"http://{self.__host}/api/{"/".join(methods)}"
 
-    def send(self, engine_password: str, user_key: str, data_name: str, data: dict, *methods: str) -> Dict:
-        url = self.__build_route(methods)
+    def connect(self, engine_password: str):
+        url = self.__build_route(("ping", ))
 
-        print(url)
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        final_data = {
+            "password": engine_password
+        }
+
+        try:
+            post(url, headers=final_data, json=final_data)
+            self._connected = True
+        except Exception as e:
+            self._connected = False
+
+            print(e)
+
+    def send(self, engine_password: str, user_key: str, data_name: str, data: dict, *methods: str) -> Optional[Dict]:
+        if not self._connected:
+            return
+
+        url = self.__build_route(methods)
 
         headers = {
             "Content-Type": "application/json"
@@ -29,5 +51,8 @@ class Connector:
         }
 
         response = post(url, headers=headers, json=final_data)
+
+        if response.status_code != 200:
+            return None
 
         return response.json()
