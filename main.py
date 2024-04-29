@@ -4,7 +4,6 @@ from instance import InstanceConnector, InstancePermission
 app = Flask(__name__)
 
 instance_connector = InstanceConnector("127.0.0.1:52146")
-instance_connector.connect("12345678")
 
 
 @app.route("/")
