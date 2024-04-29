@@ -1,2 +1,2 @@
-from .instance_connector import InstanceConnector
+from .engine_connector import EngineConnector
 from .instance_permission import InstancePermission

@@ -2,9 +2,9 @@ from utils import Connector
 from typing import Dict, Optional
 
 
-class InstanceConnector(Connector):
+class EngineConnector(Connector):
     def __init__(self, host: str):
-        super().__init__(host, "instance")
+        super().__init__(host)
 
     def get_instances(self, engine_password: str, user_key: str) -> Optional[Dict]:
         response = self.send(engine_password, user_key, "instance_data", {}, "instance", "get")

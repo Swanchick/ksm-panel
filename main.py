@@ -1,14 +1,20 @@
-from flask import Flask, render_template, request, redirect
-from instance import InstanceConnector, InstancePermission
+from flask import Flask, render_template, request, redirect, session
+from engine import EngineConnector, InstancePermission
 
 app = Flask(__name__)
+app.secret_key = "<Secret Key>"
 
-instance_connector = InstanceConnector("127.0.0.1:52146")
+instance_connector = EngineConnector("127.0.0.1:52146")
 
 
 @app.route("/")
 def index():
-    response = instance_connector.get_instances("12345678", "debug")
+    if "user_key" not in session:
+        return redirect("/login/")
+
+    user_key = session["user_key"]
+
+    response = instance_connector.get_instances("12345678", user_key)
     instances = response["instances"] if response is not None else []
 
     return render_template("index.html", instances=instances)
@@ -96,6 +102,11 @@ def instance_stop_server(instance_id: int):
     response = instance_connector.stop_instance("12345678", "debug", int(instance_id))
 
     return response
+
+
+@app.route("/login/")
+def authorization():
+    return render_template("login.html")
 
 
 if __name__ == "__main__":
