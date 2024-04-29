@@ -125,3 +125,15 @@ class InstanceConnector(Connector):
         )
 
         return response
+
+    def get_users(self, engine_password: str, user_key: str) -> Optional[Dict]:
+        response = self.send(
+            engine_password,
+            user_key,
+            "instance_data",
+            {},
+            "user",
+            "get"
+        )
+
+        return response

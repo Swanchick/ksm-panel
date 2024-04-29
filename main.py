@@ -25,8 +25,9 @@ def instance(instance_id: int):
 def instance_permission(instance_id: int):
     user_permissions = instance_connector.get_user_permissions("12345678", "debug", int(instance_id))
     permissions = instance_connector.get_permissions("12345678", "debug")
+    users = instance_connector.get_users("12345678", "debug")
 
-    instance_permission = InstancePermission(user_permissions["users"], permissions["permissions"])
+    instance_permission = InstancePermission(user_permissions["users"], permissions["permissions"], users["users"])
 
     return render_template(
         "instance/permissions.html",
