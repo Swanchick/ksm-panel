@@ -100,3 +100,28 @@ class InstanceConnector(Connector):
 
         return response
 
+    def add_permission(self, engine_password: str, user_key: str, instance_id: int, user_id: int, permission: int) -> Dict:
+        response = self.send(
+            engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [user_id, permission]},
+            "instance",
+            "call",
+            "add_permission"
+        )
+
+        return response
+
+    def remove_permission(self, engine_password: str, user_key: str, instance_id: int, user_id: int, permission: int) -> Dict:
+        response = self.send(
+            engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [user_id, permission]},
+            "instance",
+            "call",
+            "remove_permission"
+        )
+
+        return response

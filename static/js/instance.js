@@ -41,7 +41,7 @@ $("#stop-server").click((event) => {
     $.ajax({
         url: "/instance/" + instance_id + "/call/stop_server/",
         type: "GET",
-        success: (response) => {
+        success: () => {
             location.reload();
         }
     })
@@ -51,7 +51,7 @@ function createOutput(output_text){
     let output_panel = $("#outputs");
     let output = document.createElement("p");
     let output_node = document.createTextNode(output_text);
-    output.appendChild(output_node)
+    output.appendChild(output_node);
     output_panel.append(output);
 }
 
@@ -98,7 +98,7 @@ function createLastOutput(instance_id){
             let edited_output = compareArrays(saved_output, output);
 
             if (edited_output.length === 0) {
-                return
+                return;
             }
 
             saved_output = output;

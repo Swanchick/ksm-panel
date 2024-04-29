@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, render_template, request, redirect
 from instance import InstanceConnector, InstancePermission
 
 app = Flask(__name__)
@@ -31,8 +31,37 @@ def instance_permission(instance_id: int):
 
     return render_template(
         "instance/permissions.html",
-        permissions=instance_permission.get_user_permissions()
+        permissions=instance_permission.get_user_permissions(),
+        instance_id=instance_id
     )
+
+
+@app.route("/instance/<instance_id>/permissions/add/", methods=["POST"])
+def instance_permission_add(instance_id: int):
+    data = request.json
+
+    user_id = data["user_id"]
+    permission_id = int(data["permission_id"])
+
+    response = instance_connector.add_permission("12345678", "debug", instance_id, user_id, permission_id)
+
+    print(response)
+
+    return response
+
+
+@app.route("/instance/<instance_id>/permissions/remove/", methods=["POST"])
+def instance_permission_remove(instance_id: int):
+    data = request.json
+
+    user_id = data["user_id"]
+    permission_id = int(data["permission_id"])
+
+    response = instance_connector.remove_permission("12345678", "debug", instance_id, user_id, permission_id)
+
+    print(response)
+
+    return response
 
 
 @app.route("/instance/<instance_id>/call/get_output/")

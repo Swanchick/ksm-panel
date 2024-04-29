@@ -9,6 +9,8 @@
 {% block title %}User permissions{% endblock %}
 
 {% block main %}
+    <input type="hidden" id="instance_id" value="{{ instance_id }}">
+
     <div class="menus">
         <a href="/">Close</a>
         <a href="#">User permissions</a>
@@ -16,19 +18,24 @@
         <a href="#">Folders/Files</a>
     </div>
 
-    {% for user in permissions %}
-        <h2>{{ user }}</h2>
-
+    <form id="permission_check">
+        {% for user in permissions %}
+            <h2>{{ user }}</h2>
             {% for permission in permissions[user] %}
                 <div class="permission">
                     {% if permission.activated %}
-                        <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.name }}" checked>
+                        <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.permission }}" checked>
                     {% else %}
-                        <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.name }}">
+                        <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.permission }}">
                     {% endif %}
 
                     <p>{{ permission.name }}</p>
                 </div>
             {% endfor %}
-    {% endfor %}
+        {% endfor %}
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/permissions.js') }}"></script>
 {% endblock %}
