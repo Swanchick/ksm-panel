@@ -3,17 +3,21 @@ from typing import Dict, Optional
 
 
 class EngineConnector(Connector):
-    def __init__(self, host: str):
+    __engine_password: str
+
+    def __init__(self, host: str, engine_password: str):
         super().__init__(host)
 
-    def get_instances(self, engine_password: str, user_key: str) -> Optional[Dict]:
-        response = self.send(engine_password, user_key, "instance_data", {}, "instance", "get")
+        self.__engine_password = engine_password
+
+    def get_instances(self, user_key: str) -> Optional[Dict]:
+        response = self.send(self.__engine_password, user_key, "instance_data", {}, "instance", "get")
 
         return response
 
-    def get_instance(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+    def get_instance(self, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id},
@@ -23,9 +27,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def get_output(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+    def get_output(self, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id},
@@ -36,9 +40,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def get_permissions(self, engine_password: str, user_key: str) -> Optional[Dict]:
+    def get_permissions(self, user_key: str) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {},
@@ -48,9 +52,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def get_user_permissions(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+    def get_user_permissions(self, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id},
@@ -61,9 +65,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def send_command(self, engine_password: str, user_key: str, instance_id: int, command: str) -> Optional[Dict]:
+    def send_command(self, user_key: str, instance_id: int, command: str) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id, "args": [command]},
@@ -74,9 +78,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def start_instance(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+    def start_instance(self, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id},
@@ -87,9 +91,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def stop_instance(self, engine_password: str, user_key: str, instance_id: int) -> Optional[Dict]:
+    def stop_instance(self, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
-            engine_password, 
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id},
@@ -100,9 +104,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def add_permission(self, engine_password: str, user_key: str, instance_id: int, user_id: int, permission: int) -> Dict:
+    def add_permission(self, user_key: str, instance_id: int, user_id: int, permission: int) -> Dict:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id, "args": [user_id, permission]},
@@ -113,9 +117,9 @@ class EngineConnector(Connector):
 
         return response
 
-    def remove_permission(self, engine_password: str, user_key: str, instance_id: int, user_id: int, permission: int) -> Dict:
+    def remove_permission(self, user_key: str, instance_id: int, user_id: int, permission: int) -> Dict:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {"instance_id": instance_id, "args": [user_id, permission]},
@@ -126,14 +130,29 @@ class EngineConnector(Connector):
 
         return response
 
-    def get_users(self, engine_password: str, user_key: str) -> Optional[Dict]:
+    def get_users(self, user_key: str) -> Optional[Dict]:
         response = self.send(
-            engine_password,
+            self.__engine_password,
             user_key,
             "instance_data",
             {},
             "user",
             "get"
+        )
+
+        return response
+
+    def user_authorization(self, username: str, password: str) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            "",
+            "user_data",
+            {
+                "name": username,
+                "password": password
+            },
+            "user",
+            "authorization"
         )
 
         return response
