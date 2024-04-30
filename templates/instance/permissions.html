@@ -2,22 +2,21 @@
 
 
 {% block stylesheets %}
-    <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/instance.css') }}">
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/permissions.css') }}">
 {% endblock %}
 
 {% block title %}User permissions{% endblock %}
 {% block instances %}Permissions{% endblock %}
 
+{% block header %}
+    <a href="/">Close</a>
+    <a href="/instance/{{ instance_id }}">Main</a>
+    <a href="#">Instance</a>
+    <a href="#">Folders/Files</a>
+{% endblock %}
+
 {% block main %}
     <input type="hidden" id="instance_id" value="{{ instance_id }}">
-
-    <div class="menus">
-        <a href="/">Close</a>
-        <a href="/instance/{{ instance_id }}">Main</a>
-        <a href="#">Instance</a>
-        <a href="#">Folders/Files</a>
-    </div>
 
     <form id="permission_check">
         {% for user in permissions %}

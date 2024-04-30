@@ -80,9 +80,7 @@ function compareArrays(array1, array2){
 
             continue;
         }
-
-
-
+        
         out.push(current_line);
     }
 

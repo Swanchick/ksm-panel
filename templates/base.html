@@ -8,9 +8,14 @@
     <title>KSM - {% block title %}{% endblock %}</title>
 </head>
 <body>
-    <h1 class="title">KSM Panel - {% block instances %}{% endblock %}</h1>
+    <h1 class="title">KSM - {% block instances %}{% endblock %}</h1>
 
     <div class="main">
+        <header>
+            {% block header %}
+            {% endblock %}
+        </header>
+
         {% block main %}
         {% endblock %}
     </div>

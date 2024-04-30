@@ -5,18 +5,18 @@
 {% endblock %}
 
 {% block title %}Instance{% endblock %}
-{% block instances %}Instance{% endblock %}
+{% block instances %}Main{% endblock %}
+
+{% block header %}
+    <a href="/">Close</a>
+    <a href="/instance/{{ instance_data["instance_id"] }}/permissions/">User permissions</a>
+    <a href="#">Instance</a>
+    <a href="#">Folders/Files</a>
+{% endblock %}
 
 {% block main %}
     <input type="hidden" id="instance_id" value="{{ instance_data["instance_id"] }}">
     <input type="hidden" id="instance_state" value="{{ instance_data["instance_state"] }}">
-
-    <div class="menus">
-        <a href="/">Close</a>
-        <a href="/instance/{{ instance_data["instance_id"] }}/permissions/">User permissions</a>
-        <a href="#">Instance</a>
-        <a href="#">Folders/Files</a>
-    </div>
 
     <div class="main-instance">
         <div class="console">

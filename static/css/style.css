@@ -1,3 +1,16 @@
+header {
+    display: flex;
+
+    justify-content: space-evenly;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+header a {
+    font-size: 24px;
+}
+
 .title {
     text-align: center;
 }

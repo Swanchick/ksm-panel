@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from engine import EngineConnector, InstancePermission
 
 app = Flask(__name__)
@@ -26,11 +26,11 @@ def index():
 @app.route("/instance/<instance_id>/")
 def instance(instance_id: int):
     if "user_key" not in session:
-        return redirect("/login/")
+        return redirect("/")
 
     response = engine_connector.get_instance("debug", int(instance_id))
     if response["status"] == 403:
-        return redirect("/login/")
+        return redirect("/")
 
     return render_template("instance/instance.html", instance_data=response["instance_data"])
 
@@ -46,7 +46,7 @@ def instance_permission(instance_id: int):
     permissions = engine_connector.get_permissions(user_key)
     users = engine_connector.get_users(user_key)
     if user_permissions["status"] == 403 or permissions["status"] == 403 or user_permissions["status"] == 403:
-        return redirect("/")
+        return redirect(f"/instance/{instance_id}/")
 
     instance_permission = InstancePermission(user_permissions["users"], permissions["permissions"], users["users"])
 
