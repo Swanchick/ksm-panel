@@ -1,5 +1,9 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session
 from engine import EngineConnector, InstancePermission
+from panel import Panel
+
+
+panel = Panel()
 
 app = Flask(__name__)
 app.secret_key = "<Secret Key>"
@@ -38,7 +42,7 @@ def instance(instance_id: int):
 @app.route("/instance/<instance_id>/permissions/")
 def instance_permission(instance_id: int):
     if "user_key" not in session:
-        return redirect("/login/")
+        return redirect(f"/instance/{instance_id}/")
 
     user_key = session["user_key"]
 
@@ -157,6 +161,39 @@ def authorization():
         return redirect("/")
 
     return render_template("login.html")
+
+
+@app.route("/instance/create/", methods=["GET", "POST"])
+def create_instance():
+    if "user_key" not in session:
+        return redirect("/")
+
+    user_key = session["user_key"]
+    response = engine_connector.get_user(user_key)
+    if response["status"] != 200:
+        return redirect("/")
+
+    user = response["user"]
+
+    if user["is_administrator"] is False:
+        return redirect("/")
+
+    instance_types = engine_connector.get_instance_types()
+
+    if request.method == "POST":
+        form = request.form
+
+        instance_name = form.get("instance_name")
+        if instance_name != "":
+            instance_type = form.get("instance_type")
+
+            response = engine_connector.create_instance(user_key, instance_name, instance_type)
+            print(response)
+
+            if response["status"] == 200:
+                return redirect("/")
+
+    return render_template("instance_editor.html", instance_types=instance_types["instance_types"])
 
 
 if __name__ == "__main__":

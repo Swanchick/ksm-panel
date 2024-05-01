@@ -27,6 +27,30 @@ class EngineConnector(Connector):
 
         return response
 
+    def get_instance_types(self):
+        response = self.send(
+            self.__engine_password,
+            "",
+            "instance_types",
+            {},
+            "instance",
+            "types"
+        )
+
+        return response
+
+    def create_instance(self, user_key: str, instance_name: str, instance_type: str) -> Optional[Dict]:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"name": instance_name, "instance_type": instance_type},
+            "instance",
+            "create"
+        )
+
+        return response
+
     def get_output(self, user_key: str, instance_id: int) -> Optional[Dict]:
         response = self.send(
             self.__engine_password,
@@ -138,6 +162,18 @@ class EngineConnector(Connector):
             {},
             "user",
             "get"
+        )
+
+        return response
+
+    def get_user(self, user_key: str) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "",
+            {},
+            "user",
+            "get_user"
         )
 
         return response

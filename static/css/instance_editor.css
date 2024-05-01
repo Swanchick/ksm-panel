@@ -1,0 +1,26 @@
+.instance_editor {
+    width: 50%;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.instance_editor input {
+    width: 70%;
+    font-size: 24px;
+
+    margin-bottom: 20px;
+}
+
+.instance_editor p {
+    font-size: 24px;
+}
+
+.instance_editor select {
+    width: 70%;
+    font-size: 24px;
+
+    margin-bottom: 50px;
+}

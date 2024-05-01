@@ -3,6 +3,11 @@
 {% block title %}Main{% endblock %}
 {% block instances %}Main{% endblock %}
 
+{% block header %}
+    <a href="#">Create User</a>
+    <a href="/instance/create/">Create Instance</a>
+{% endblock %}
+
 {% block main %}
     {% for instance in instances %}
         <div class="instance">
