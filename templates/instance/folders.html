@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/folders.css') }}">
+{% endblock %}
+
+{% block title %}User permissions{% endblock %}
+{% block instances %}Folders{% endblock %}
+
+{% block header %}
+    <a href="/">Close</a>
+    <a href="/instance/{{ instance_id }}/permissions">User permissions</a>
+    <a href="#">Instance</a>
+    <a href="/instance/{{ instance_id }}/">Main</a>
+{% endblock %}
+
+{% block main %}
+    <input type="hidden" id="instance_id" value="{{ instance_id }}">
+
+    <div class="folders">
+        <div class="file_but">
+            <a href="#" class="folder">..</a>
+        </div>
+
+
+        {% for file in folders %}
+            <div class="file_button">
+                <a href="#" class="{{ "folder" if file["file_type"] == 1 else "file" }}">{{ file["file_name"] }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/folders.js') }}"></script>
+{% endblock %}
