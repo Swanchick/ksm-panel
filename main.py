@@ -196,5 +196,43 @@ def create_instance():
     return render_template("instance_editor.html", instance_types=instance_types["instance_types"])
 
 
+@app.route("/instance/<instance_id>/folders/", methods=["GET", "POST"])
+def instance_folder(instance_id: int):
+    if "user_key" not in session:
+        return redirect(f"/instance/{instance_id}/")
+
+    user_key = session["user_key"]
+    folder_path = []
+
+    is_post = request.method == "POST"
+
+    if is_post:
+        data = request.json
+
+        print(data)
+
+        folder_path = data["current_folder"]
+        folder_name = data["folder"]
+        if folder_name != "":
+            if folder_name == "..":
+                if len(folder_path) > 0:
+                    folder_path.pop()
+            else:
+                folder_path.append(folder_name)
+
+            print(folder_path)
+
+    response = engine_connector.get_folders(user_key, int(instance_id), folder_path)
+    if response["status"] != 200:
+        return redirect(f"/instance/{instance_id}/")
+
+    folders = response["folders"]
+
+    if is_post:
+        return {"folder": folder_path, "data": response}
+
+    return render_template("instance/folders.html", instance_id=instance_id, folders=folders, folder=folder_path)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

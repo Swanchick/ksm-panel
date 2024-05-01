@@ -1,5 +1,5 @@
 from utils import Connector
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 
 class EngineConnector(Connector):
@@ -189,6 +189,19 @@ class EngineConnector(Connector):
             },
             "user",
             "authorization"
+        )
+
+        return response
+
+    def get_folders(self, user_key: str, instance_id: int, folder_path: List[str]) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": folder_path},
+            "instance",
+            "call",
+            "get_folders"
         )
 
         return response
