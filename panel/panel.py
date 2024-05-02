@@ -1,6 +1,8 @@
+from cryptography.fernet import Fernet
+
+
 class Panel:
-    def __init__(self):
-        pass
+    __cryptography: Fernet
 
     def load_settings(self):
         pass

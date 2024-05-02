@@ -1,6 +1,9 @@
 from requests import post
 from typing import Tuple, Dict, Optional
 from abc import ABC
+from json import loads, dumps
+from base64 import b64encode, b64decode
+from cryptography.fernet import Fernet
 
 
 class Connector(ABC):
@@ -8,6 +11,20 @@ class Connector(ABC):
 
     def __init__(self, host: str):
         self.__host = host
+        self.__cryptography = Fernet("j2NSLoXO9uE1HX8nLiTX-yQWtWCMkWH05M5r5gS-66I=")
+
+    def __encrypt_data(self, data: Dict) -> Dict:
+        json = dumps(data)
+        encrypted_json = self.__cryptography.encrypt(json.encode())
+        bs64 = b64encode(encrypted_json)
+
+        return {"data": bs64.decode()}
+
+    def __decrypt_data(self, data: str) -> Dict:
+        encrypted_data = b64decode(data)
+        decrypted_json = self.__cryptography.decrypt(encrypted_data)
+
+        return loads(decrypted_json)
 
     def __build_route(self, methods: Tuple[str, ...]):
         return f"http://{self.__host}/api/{"/".join(methods)}"
@@ -25,16 +42,18 @@ class Connector(ABC):
             data_name: data
         }
 
+        encrypted_data = self.__encrypt_data(final_data)
+
         try:
-            response = post(url, headers=headers, json=final_data)
+            response = post(url, headers=headers, json=encrypted_data)
 
             if response.status_code != 200:
                 return None
 
-            return response.json()
+            encrypted_data = response.text
+            decrypted_data = self.__decrypt_data(encrypted_data)
+
+            return decrypted_data
+
         except Exception as e:
             print(e)
-
-            return None
-
-
