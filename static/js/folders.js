@@ -5,6 +5,9 @@ $(document).on("click", "a.file", (e) => {
 
     e.preventDefault();
     let filename = e.target.text;
+
+
+
 });
 
 $(document).on("click", "a.folder", (e) => {

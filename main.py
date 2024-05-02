@@ -152,13 +152,11 @@ def authorization():
         
         response = engine_connector.user_authorization(username, password)
 
-        if response["status"] != 200:
-            return redirect("/login/")
+        if response["status"] == 200:
+            user_key = response["user_data"]["key"]
+            session["user_key"] = user_key
 
-        user_key = response["user_data"]["key"]
-        session["user_key"] = user_key
-
-        return redirect("/")
+            return redirect("/")
 
     return render_template("login.html")
 
@@ -232,6 +230,11 @@ def instance_folder(instance_id: int):
         return {"folder": folder_path, "data": response}
 
     return render_template("instance/folders.html", instance_id=instance_id, folders=folders, folder=folder_path)
+
+
+@app.route("/instance/<instance_id>/folders/", methods=["GET", "POST"])
+def folder_folder(instance_id: int):
+    return render_template()
 
 
 if __name__ == "__main__":
