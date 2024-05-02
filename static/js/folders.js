@@ -5,8 +5,11 @@ $(document).on("click", "a.file", (e) => {
 
     e.preventDefault();
     let filename = e.target.text;
+    let url = "/instance/" + instance_id + "/file/" + filename + "/?path=/" + current_folder.join("/");
 
+    console.log(url);
 
+    window.location.href = url;
 
 });
 

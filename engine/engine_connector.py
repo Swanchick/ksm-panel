@@ -205,3 +205,29 @@ class EngineConnector(Connector):
         )
 
         return response
+
+    def open_file(self, user_key: str, instance_id: int, file_path: List[str], file_name: str) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": file_path + [file_name]},
+            "instance",
+            "call",
+            "open_file"
+        )
+
+        return response
+
+    def write_file(self, user_key: str, instance_id: int, file_path: List[str], file_name: str, file_data: str) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [file_name, file_data] + file_path},
+            "instance",
+            "call",
+            "write_file"
+        )
+
+        return response

@@ -15,10 +15,16 @@
 {% endblock %}
 
 {% block main %}
-    <input type="hidden" id="instance_id" value="{{ instance_id }}">
+    <input type="hidden" id="path" value="{{ path }}">
 
     <div class="file">
+        <h2>{{ path }}</h2>
 
+        <label>
+            <textarea id="file">{{ file }}</textarea>
+        </label>
+
+        <button id="save">Save</button>
     </div>
 {% endblock %}
 

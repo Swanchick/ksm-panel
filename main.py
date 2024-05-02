@@ -207,8 +207,6 @@ def instance_folder(instance_id: int):
     if is_post:
         data = request.json
 
-        print(data)
-
         folder_path = data["current_folder"]
         folder_name = data["folder"]
         if folder_name != "":
@@ -217,8 +215,6 @@ def instance_folder(instance_id: int):
                     folder_path.pop()
             else:
                 folder_path.append(folder_name)
-
-            print(folder_path)
 
     response = engine_connector.get_folders(user_key, int(instance_id), folder_path)
     if response["status"] != 200:
@@ -232,9 +228,35 @@ def instance_folder(instance_id: int):
     return render_template("instance/folders.html", instance_id=instance_id, folders=folders, folder=folder_path)
 
 
-@app.route("/instance/<instance_id>/folders/", methods=["GET", "POST"])
-def folder_folder(instance_id: int):
-    return render_template()
+@app.route("/instance/<instance_id>/file/<file_name>/", methods=["GET", "POST"])
+def instance_file(instance_id: int, file_name: str):
+    if "user_key" not in session:
+        return redirect(f"/instance/{instance_id}/")
+
+    user_key = session["user_key"]
+
+    path = request.args.get("path")
+    path_split = path.split("/")
+
+    if request.method == "POST":
+        data = request.json
+        file_data = data["file_data"]
+
+        response = engine_connector.write_file(user_key, int(instance_id), path_split, file_name, file_data)
+
+        return response
+
+    response = engine_connector.open_file(user_key, int(instance_id), path_split, file_name)
+    if response["status"] != 200:
+        return redirect(f"/instance/{instance_id}/")
+
+    return render_template(
+        "instance/file.html",
+        path=path,
+        file=response["message"],
+        file_name=file_name,
+        instance_id=instance_id
+    )
 
 
 if __name__ == "__main__":
