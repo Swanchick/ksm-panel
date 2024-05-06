@@ -231,3 +231,19 @@ class EngineConnector(Connector):
         )
 
         return response
+
+    def create_user(self, user_key: str, user_name: str, password: str, administrator: bool) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "user_data",
+            {
+                "name": user_name,
+                "password": password,
+                "administrator": administrator
+            },
+            "user",
+            "create"
+        )
+
+        return response

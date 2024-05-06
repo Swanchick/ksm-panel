@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/instance_editor.css') }}">
+{% endblock %}
+
+{% block instances %}User Creator{% endblock %}
+{% block title %}User Creator{% endblock %}
+
+{% block header %}
+    <a href="/">Close</a>
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        <label class="instance_editor">
+            <p>User name:</p>
+            <input type="text" name="username">
+            <p>User password</p>
+            <input type="password" name="password">
+            <p>Is administrator</p>
+            <input type="checkbox" name="is_admin">
+
+            <input type="submit" value="Create User">
+        </label>
+    </form>
+{% endblock %}

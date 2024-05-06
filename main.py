@@ -256,6 +256,26 @@ def instance_file(instance_id: int, file_name: str):
         instance_id=instance_id
     )
 
+@app.route("/user/create/", methods=["GET", "POST"])
+def user_create():
+    if "user_key" not in session:
+        return redirect("/")
+
+    user_key = session["user_key"]
+    if request.method == "POST":
+        form = request.form
+        username = form["username"]
+        password = form["password"]
+        is_admin = (form["is_admin"] == "on") if "is_admin" in form else False
+
+        if username != "" and password != "":
+            response = panel.connector.create_user(user_key, username, password, is_admin)
+            if response["status"] == 200:
+                return redirect("/")
+
+    return render_template("user.html")
 
 if __name__ == "__main__":
-    panel.start(app)
+    app.run(debug=True)
+
+    # panel.start(app)
