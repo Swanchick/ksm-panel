@@ -5,8 +5,8 @@ from typing import Dict, Optional, List
 class EngineConnector(Connector):
     __engine_password: str
 
-    def __init__(self, host: str, engine_password: str):
-        super().__init__(host)
+    def __init__(self, host: str, port: int, secret_key: str, engine_password: str):
+        super().__init__(host, port, secret_key)
 
         self.__engine_password = engine_password
 

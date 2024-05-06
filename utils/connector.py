@@ -8,10 +8,15 @@ from cryptography.fernet import Fernet
 
 class Connector(ABC):
     __host: str
+    __port: int
+    __secret_key: str
 
-    def __init__(self, host: str):
+    def __init__(self, host: str, port: int, secret_key: str):
         self.__host = host
-        self.__cryptography = Fernet("j2NSLoXO9uE1HX8nLiTX-yQWtWCMkWH05M5r5gS-66I=")
+        self.__port = port
+        self.__secret_key = secret_key
+
+        self.__cryptography = Fernet(self.__secret_key)
 
     def __encrypt_data(self, data: Dict) -> Dict:
         json = dumps(data)
@@ -27,7 +32,7 @@ class Connector(ABC):
         return loads(decrypted_json)
 
     def __build_route(self, methods: Tuple[str, ...]):
-        return f"http://{self.__host}/api/{"/".join(methods)}"
+        return f"http://{self.__host}:{self.__port}/api/{"/".join(methods)}"
 
     def send(self, engine_password: str, user_key: str, data_name: str, data: dict, *methods: str) -> Optional[Dict]:
         url = self.__build_route(methods)
