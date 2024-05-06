@@ -275,7 +275,6 @@ def user_create():
 
     return render_template("user.html")
 
-if __name__ == "__main__":
-    app.run(debug=True)
 
-    # panel.start(app)
+if __name__ == "__main__":
+    panel.start(app)
