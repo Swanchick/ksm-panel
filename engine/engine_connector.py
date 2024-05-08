@@ -211,7 +211,7 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "instance_data",
-            {"instance_id": instance_id, "args": file_path + [file_name]},
+            {"instance_id": instance_id, "args": [file_name] + file_path},
             "instance",
             "call",
             "open_file"
