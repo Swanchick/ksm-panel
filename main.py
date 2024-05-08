@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
-from engine import EngineConnector, InstancePermission
+from engine import InstancePermission
 from panel import Panel
 
 
@@ -30,7 +30,9 @@ def instance(instance_id: int):
     if "user_key" not in session:
         return redirect("/")
 
-    response = panel.connector.get_instance("debug", int(instance_id))
+    user_key = session["user_key"]
+
+    response = panel.connector.get_instance(user_key, int(instance_id))
     if response["status"] == 403:
         return redirect("/")
 
@@ -111,10 +113,12 @@ def instance_send_server(instance_id: int):
     if "user_key" not in session:
         return {}
 
+    user_key = session["user_key"]
+
     data = request.json
     command = data["command"]
 
-    response = panel.connector.send_command("debug", int(instance_id), command)
+    response = panel.connector.send_command(user_key, int(instance_id), command)
 
     return response
 
@@ -136,7 +140,9 @@ def instance_stop_server(instance_id: int):
     if "user_key" not in session:
         return {}
 
-    response = panel.connector.stop_instance("debug", int(instance_id))
+    user_key = session["user_key"]
+
+    response = panel.connector.stop_instance(user_key, int(instance_id))
 
     return response
 
