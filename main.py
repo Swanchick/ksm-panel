@@ -214,6 +214,9 @@ def instance_folder(instance_id: int):
 
     if ".." in folder_path:
         print("Hello World")
+
+        banned_folders = ["", "..", "."]
+        for folder in banned_folders:
             while folder in folder_path:
                 folder_path.remove(folder)
 
