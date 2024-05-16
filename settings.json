@@ -1,12 +1,12 @@
 {
   "panel": {
     "port": 5000,
-    "host": "0.0.0.0"
+    "host": "127.0.0.1"
   },
   "engine": {
     "host": "127.0.0.1",
     "port": 52146,
     "password": "12345678",
-    "secret_key": "j2NSLoXO9uE1HX8nLiTX-yQWtWCMkWH05M5r5gS-66I="
+    "secret_key": "UXCnaUui8h64bYKBl_kVQDExKNHA9FVi4r4Swe7T3Xw="
   }
 }

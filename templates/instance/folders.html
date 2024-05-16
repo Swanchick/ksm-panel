@@ -15,6 +15,11 @@
 {% endblock %}
 
 {% block main %}
+    <header>
+        <a href="#">Create file</a>
+        <a href="#">Create folder</a>
+    </header>
+
     <input type="hidden" id="instance_id" value="{{ instance_id }}">
 
     <div class="folders">
@@ -25,7 +30,16 @@
 
         {% for file in folders %}
             <div class="file_button">
-                <a href="#" class="{{ "folder" if file["file_type"] == 1 else "file" }}">{{ file["file_name"] }}</a>
+                <div class="row">
+                    <a href="#" class="{{ "folder" if file["file_type"] == 1 else "file" }}">{{ file["file_name"] }}</a>
+                    {% if file["file_type"] == 1 %}
+                        <p>(folder)</p>
+                    {% else %}
+                        <p>(file)</p>
+                    {% endif %}
+                </div>
+
+                <a href="#" class="delete_{{ "folder" if file["file_type"] == 1 else "file" }}" id={{ file["file_name"] }}>Delete</a>
             </div>
         {% endfor %}
     </div>

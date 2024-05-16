@@ -3,10 +3,11 @@
     flex-direction: column;
 
     width: 100%;
+    font-size: 24px;
 }
 
 .folders a {
-    font-size: 24px;
+    margin-right: 10px;
 }
 
 .folders #folder {
@@ -43,5 +44,12 @@
     border: 1px solid black;
 
     padding: 10px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
 }
 

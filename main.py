@@ -204,21 +204,22 @@ def instance_folder(instance_id: int):
         return redirect(f"/instance/{instance_id}/")
 
     user_key = session["user_key"]
-    folder_path = []
+    args = request.args
 
-    is_post = request.method == "POST"
+    if "path" not in args:
+        return redirect(f"/instance/{instance_id}/")
 
-    if is_post:
-        data = request.json
+    path = args["path"]
+    folder_path = [] if path == "/" or path == "" else path.split("/")
 
-        folder_path = data["current_folder"]
-        folder_name = data["folder"]
-        if folder_name != "":
-            if folder_name == "..":
-                if len(folder_path) > 0:
-                    folder_path.pop()
-            else:
-                folder_path.append(folder_name)
+    if ".." in folder_path:
+        print("Hello World")
+            while folder in folder_path:
+                folder_path.remove(folder)
+
+        print(folder_path)
+
+        return redirect(f"/instance/{instance_id}/folders/?path=/{"/".join(folder_path[:-1])}{"/" if len(folder_path) != 0 else ""}")
 
     response = panel.connector.get_folders(user_key, int(instance_id), folder_path)
     if response["status"] != 200:
@@ -226,7 +227,7 @@ def instance_folder(instance_id: int):
 
     folders = response["folders"]
 
-    if is_post:
+    if request.method == "POST":
         return {"folder": folder_path, "data": response}
 
     return render_template("instance/folders.html", instance_id=instance_id, folders=folders, folder=folder_path)
@@ -284,4 +285,6 @@ def user_create():
 
 
 if __name__ == "__main__":
-    panel.start(app)
+    app.run(debug=True)
+
+    # panel.start(app)
