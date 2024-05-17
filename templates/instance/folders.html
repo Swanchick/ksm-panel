@@ -24,22 +24,22 @@
 
     <div class="folders">
         <div class="file_but">
-            <a href="#" class="folder">..</a>
+            <a href="/instance/{{ instance_id }}/folders/?path={{ "/".join(folder_path) }}/.." class="folder">..</a>
         </div>
-
 
         {% for file in folders %}
             <div class="file_button">
                 <div class="row">
-                    <a href="#" class="{{ "folder" if file["file_type"] == 1 else "file" }}">{{ file["file_name"] }}</a>
                     {% if file["file_type"] == 1 %}
+                        <a href="/instance/{{ instance_id }}/folders/?path={{ "/".join(folder_path) }}/{{ file["file_name"] }}" class="folder">{{ file["file_name"] }}</a>
                         <p>(folder)</p>
                     {% else %}
+                        <a href="/instance/{{ instance_id }}/file/{{ file["file_name"] }}/?path={{ "/".join(folder_path) }}" class="file">{{ file["file_name"] }}</a>
                         <p>(file)</p>
                     {% endif %}
                 </div>
 
-                <a href="#" class="delete_{{ "folder" if file["file_type"] == 1 else "file" }}" id={{ file["file_name"] }}>Delete</a>
+                <a href="#" id={{ file["file_name"] }}>Delete</a>
             </div>
         {% endfor %}
     </div>

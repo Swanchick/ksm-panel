@@ -198,7 +198,7 @@ def create_instance():
     return render_template("instance_editor.html", instance_types=instance_types["instance_types"])
 
 
-@app.route("/instance/<instance_id>/folders/", methods=["GET", "POST"])
+@app.route("/instance/<instance_id>/folders/")
 def instance_folder(instance_id: int):
     if "user_key" not in session:
         return redirect(f"/instance/{instance_id}/")
@@ -209,20 +209,19 @@ def instance_folder(instance_id: int):
     if "path" not in args:
         return redirect(f"/instance/{instance_id}/")
 
-    path = args["path"]
+    path = args.get("path")
+
     folder_path = [] if path == "/" or path == "" else path.split("/")
 
     if ".." in folder_path:
-        print("Hello World")
-
         banned_folders = ["", "..", "."]
         for folder in banned_folders:
             while folder in folder_path:
                 folder_path.remove(folder)
 
-        print(folder_path)
-
-        return redirect(f"/instance/{instance_id}/folders/?path=/{"/".join(folder_path[:-1])}{"/" if len(folder_path) != 0 else ""}")
+        return redirect(
+            f"/instance/{instance_id}/folders/?path=/{"/".join(folder_path[:-1])}{"/" if len(folder_path) != 0 else ""}"
+        )
 
     response = panel.connector.get_folders(user_key, int(instance_id), folder_path)
     if response["status"] != 200:
@@ -230,10 +229,12 @@ def instance_folder(instance_id: int):
 
     folders = response["folders"]
 
-    if request.method == "POST":
-        return {"folder": folder_path, "data": response}
-
-    return render_template("instance/folders.html", instance_id=instance_id, folders=folders, folder=folder_path)
+    return render_template(
+        "instance/folders.html",
+        instance_id=instance_id,
+        folders=folders,
+        folder_path=folder_path,
+    )
 
 
 @app.route("/instance/<instance_id>/file/<file_name>/", methods=["GET", "POST"])
@@ -244,17 +245,26 @@ def instance_file(instance_id: int, file_name: str):
     user_key = session["user_key"]
 
     path = request.args.get("path")
-    path_split = path.split("/")
+    folder_path = path.split("/")
+
+    banned_folders = ["", "..", "."]
+    for folder in banned_folders:
+        while folder in folder_path:
+            folder_path.remove(folder)
+
+    print(folder_path)
 
     if request.method == "POST":
         data = request.json
         file_data = data["file_data"]
 
-        response = panel.connector.write_file(user_key, int(instance_id), path_split, file_name, file_data)
+        response = panel.connector.write_file(user_key, int(instance_id), folder_path, file_name, file_data)
 
         return response
 
-    response = panel.connector.open_file(user_key, int(instance_id), path_split, file_name)
+    response = panel.connector.open_file(user_key, int(instance_id), file_name, folder_path)
+    print(response)
+
     if response["status"] != 200:
         return redirect(f"/instance/{instance_id}/")
 

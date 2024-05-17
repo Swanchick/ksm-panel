@@ -206,7 +206,7 @@ class EngineConnector(Connector):
 
         return response
 
-    def open_file(self, user_key: str, instance_id: int, file_path: List[str], file_name: str) -> Dict:
+    def open_file(self, user_key: str, instance_id: int, file_name: str, file_path: List[str]) -> Dict:
         response = self.send(
             self.__engine_password,
             user_key,
@@ -228,6 +228,58 @@ class EngineConnector(Connector):
             "instance",
             "call",
             "write_file"
+        )
+
+        return response
+
+    def create_file(self, user_key: str, instance_id: int, file_name: str, file_path: List[str]) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [file_name] + file_path},
+            "instance"
+            "call",
+            "create_file"
+        )
+
+        return response
+
+    def create_folder(self, user_key: str, instance_id: int, file_name: str, file_path: List[str]) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [file_name] + file_path},
+            "instance"
+            "call",
+            "create_folder"
+        )
+
+        return response
+
+    def delete_file(self, user_key: str, instance_id: int, file_name: str, file_path: List[str]) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [file_name] + file_path},
+            "instance"
+            "call",
+            "create_folder"
+        )
+
+        return response
+
+    def delete_folder(self, user_key: str, instance_id: int, file_name: str, file_path: List[str]) -> Dict:
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "instance_data",
+            {"instance_id": instance_id, "args": [file_name] + file_path},
+            "instance"
+            "call",
+            "delete_folder"
         )
 
         return response
