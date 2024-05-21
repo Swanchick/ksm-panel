@@ -7,19 +7,13 @@
 {% block title %}Folders{% endblock %}
 {% block instances %}Folders{% endblock %}
 
-{% block header %}
-    <a href="/">Close</a>
+{% block header_buttons %}
     <a href="/instance/{{ instance_id }}/permissions">User permissions</a>
     <a href="#">Instance</a>
     <a href="/instance/{{ instance_id }}/">Main</a>
 {% endblock %}
 
 {% block main %}
-    <header>
-        <a href="#">Create file</a>
-        <a href="#">Create folder</a>
-    </header>
-
     <input type="hidden" id="instance_id" value="{{ instance_id }}">
 
     <div class="folders">
@@ -31,11 +25,11 @@
             <div class="file_button">
                 <div class="row">
                     {% if file["file_type"] == 1 %}
+                        <img src="{{ url_for('static', filename='img/icons/folder.png') }}" alt="">
                         <a href="/instance/{{ instance_id }}/folders/?path={{ "/".join(folder_path) }}/{{ file["file_name"] }}" class="folder">{{ file["file_name"] }}</a>
-                        <p>(folder)</p>
                     {% else %}
+                        <img src="{{ url_for('static', filename='img/icons/file.png') }}" alt="">
                         <a href="/instance/{{ instance_id }}/file/{{ file["file_name"] }}/?path={{ "/".join(folder_path) }}" class="file">{{ file["file_name"] }}</a>
-                        <p>(file)</p>
                     {% endif %}
                 </div>
 

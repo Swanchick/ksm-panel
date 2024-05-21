@@ -2,19 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename="img/favicon.png") }}">
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
     {% block stylesheets %}
     {% endblock %}
     <title>KSM - {% block title %}{% endblock %}</title>
 </head>
 <body>
-    <h1 class="title">KSM - {% block instances %}{% endblock %}</h1>
+    <div class="header">
+        <div class="header-content">
+            <a class="header-title" href="/">KSM - {% block instances %}{% endblock %}</a>
+            <div class="header-buttons">
+                {% block header_buttons %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
 
     <div class="main">
-        <header>
-            {% block header %}
-            {% endblock %}
-        </header>
+
 
         {% block main %}
         {% endblock %}

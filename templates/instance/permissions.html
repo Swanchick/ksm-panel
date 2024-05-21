@@ -8,8 +8,7 @@
 {% block title %}User permissions{% endblock %}
 {% block instances %}Permissions{% endblock %}
 
-{% block header %}
-    <a href="/">Close</a>
+{% block header_buttons %}
     <a href="/instance/{{ instance_id }}">Main</a>
     <a href="#">Instance</a>
     <a href="#">Folders/Files</a>
@@ -18,20 +17,23 @@
 {% block main %}
     <input type="hidden" id="instance_id" value="{{ instance_id }}">
 
-    <form id="permission_check">
+    <form id="permission_check" >
         {% for user in permissions %}
-            <h2>{{ user }}</h2>
-            {% for permission in permissions[user] %}
-                <div class="permission">
-                    {% if permission.activated %}
-                        <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.permission }}" checked>
-                    {% else %}
-                        <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.permission }}">
-                    {% endif %}
+            <div class="permission-content">
+                <h2>{{ user }}</h2>
+                {% for permission in permissions[user] %}
+                    <div class="permission">
+                        {% if permission.activated %}
+                            <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.permission }}" checked>
+                        {% else %}
+                            <input type="checkbox" name="{{ permission.user_id }}" value="{{ permission.permission }}">
+                        {% endif %}
 
-                    <p>{{ permission.name }}</p>
-                </div>
-            {% endfor %}
+                        <p>{{ permission.name }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
         {% endfor %}
     </form>
 {% endblock %}

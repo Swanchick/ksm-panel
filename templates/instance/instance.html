@@ -7,8 +7,7 @@
 {% block title %}Instance{% endblock %}
 {% block instances %}Main{% endblock %}
 
-{% block header %}
-    <a href="/">Close</a>
+{% block header_buttons %}
     <a href="/instance/{{ instance_data["instance_id"] }}/permissions/">User permissions</a>
     <a href="#">Instance</a>
     <a href="/instance/{{ instance_data["instance_id"] }}/folders/?path=/">Folders/Files</a>
@@ -18,42 +17,39 @@
     <input type="hidden" id="instance_id" value="{{ instance_data["instance_id"] }}">
     <input type="hidden" id="instance_state" value="{{ instance_data["instance_state"] }}">
 
-    <div class="main-instance">
-        <div class="console">
-            <div class="console-output">
-                <div class="outputs" id="outputs">
+    <div class="control-panel">
+        <div class="control-panel-content">
+            <div class="console">
+                <div class="console-output">
+                    <div class="outputs" id="outputs">
+                    </div>
+                </div>
 
+                <label class="console-input-content">
+                    <input class="console-command-input" id="console-input" type="text" autocomplete="off">
+                    <button class="button" id="console-submit" type="submit">Send</button>
+                </label>
+            </div>
+
+            <div class="info">
+                <div class="info-content">
+                    <div>
+                        <h1>{{ instance_data["instance_name"] }}</h1>
+                        {% if instance_data["instance_state"] == 1 %}
+                            <h2>Instance state: Disabled</h2>
+                        {% else %}
+                            <h2>Instance state: Activated</h2>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="button" id="start-server">Start Server</button>
+                    <button class="button" id="stop-server">Stop Server</button>
                 </div>
             </div>
-
-            <label class="console-input-vertical">
-                <input class="console-input" id="console-input" type="text">
-                <button class="console-submit" id="console-load" type="submit">Load</button>
-                <button class="console-submit" id="console-submit" type="submit">Send</button>
-            </label>
-        </div>
-
-        <div class="control">
-            <div>
-                <h1>{{ instance_data["instance_name"] }}</h1>
-                {% if instance_data["instance_state"] == 1 %}
-                    <h2>Instance state: Disabled</h2>
-                {% else %}
-                    <h2>Instance state: Activated</h2>
-                {% endif %}
-            </div>
-
-            <div class="buttons">
-                <button id="start-server">Start Server</button>
-                <button id="stop-server">Stop Server</button>
-            </div>
         </div>
     </div>
-
-    <div class="performance">
-        <h1>Performance</h1>
-    </div>
-
 
 {% endblock %}
 

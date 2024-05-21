@@ -18,7 +18,7 @@ $("#console-submit").click((event) => {
         contentType: "application/json",
         data: JSON.stringify({command: command}),
         success: (response) => {
-            setTimeout(updateState, 100);
+            updateState();
         }
     })
 })
@@ -104,7 +104,9 @@ function createLastOutput(instance_id){
             for (let i = 0; i < edited_output.length; i++){
                 let text = edited_output[i];
 
-                createOutput(text);
+                setTimeout(() => {
+                    createOutput(text);
+                }, 25 * i);
             }
         }
     })
@@ -121,4 +123,6 @@ function updateState(){
     createLastOutput(instance_id);
 }
 
-setInterval(updateState, 5000)
+setTimeout(updateState, 100);
+
+setInterval(updateState, 3000);

@@ -1,18 +1,68 @@
-header {
-    display: flex;
+body {
+    margin: 0;
+    background: #3E2C41;
+    color: #FFFFFF;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 600;
+    overflow-x: hidden;
+}
 
-    justify-content: space-evenly;
-    align-items: center;
+a {
+    text-decoration: none;
+    user-select: none;
 
+    color: #FFFFFF;
+}
+
+a:visited {
+    color: inherit;
+}
+
+/*Header*/
+
+.header {
+    width: 100%;
+    padding: 30px 0;
+    background-color: #261C2C;
     margin-bottom: 20px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
 }
 
-header a {
-    font-size: 24px;
+.header-content {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
 }
 
-.title {
+.header-title {
+    font-size: 32px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.header-buttons a {
+    background-color: #3E2C41;
+    color: #FFFFFF;
+    border: none;
+    padding: 15px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
     text-align: center;
+    min-width: 200px;
+}
+
+.header-buttons a:hover {
+    background-color: #5C527F;
 }
 
 .main {
@@ -20,11 +70,16 @@ header a {
     width: 60%;
 }
 
-.instance {
-    display: flex;
-    justify-content: space-between;
+button {
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: none;
+    appearance: none;
+}
+
+.inline {
+    display: inline-flex;
+    justify-content: flex-start;
     align-items: center;
-    padding: 10px;
-    border: 1px solid black;
-    margin-bottom: 10px;
 }

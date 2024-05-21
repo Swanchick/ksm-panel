@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block stylesheets %}
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/instance_editor.css') }}">
 {% endblock %}
 
@@ -12,16 +13,26 @@
 {% endblock %}
 
 {% block main %}
-    <form method="post">
-        <label class="instance_editor">
-            <p>User name:</p>
-            <input type="text" name="username">
-            <p>User password</p>
-            <input type="password" name="password">
-            <p>Is administrator</p>
-            <input type="checkbox" name="is_admin">
+    <form method="post" class="login">
+        <div class="login-content">
+            <div class="login-panel">
+                <h1>Create user</h1>
+                <p>Username:</p>
+                <label class="login-input-content">
+                    <input type="text" autocomplete="off" class="login-input" name="username">
+                </label>
 
-            <input type="submit" value="Create User">
-        </label>
+                <p>Password:</p>
+                <label class="login-input-content">
+                    <input type="password" autocomplete="off" class="login-input" name="password">
+                </label>
+
+                <label class="inline last">
+                    <input type="checkbox" name="is_admin">
+                    <p>Is administrator</p>
+                </label>
+            </div>
+            <input type="submit" class="button" value="Create">
+        </div>
     </form>
 {% endblock %}

@@ -10,7 +10,7 @@ app.secret_key = panel.secret_key
 
 
 @app.route("/")
-def index():
+def main():
     if "user_key" not in session:
         return redirect("/login/")
 
@@ -22,7 +22,7 @@ def index():
 
     instances = response["instances"] if response is not None else []
 
-    return render_template("index.html", instances=instances)
+    return render_template("main.html", instances=instances)
 
 
 @app.route("/instance/<instance_id>/")

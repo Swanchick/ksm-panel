@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block stylesheets %}
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/instance_editor.css') }}">
 {% endblock %}
 
@@ -12,18 +13,26 @@
 {% endblock %}
 
 {% block main %}
-    <form method="post">
-        <label class="instance_editor">
-            <p>Instance name:</p>
-            <input autocomplete="false" type="text" name="instance_name">
-            <p>Instance type:</p>
-            <select name="instance_type">
-                {% for type in instance_types.keys() %}
-                    <option name="instance_type">{{ type }}</option>
-                {% endfor %}
-            </select>
+    <form method="post" class="login">
+        <div class="login-content">
+            <div class="login-panel">
+                <h1>Create instance</h1>
+                <p>Instance name:</p>
+                <label class="login-input-content">
+                    <input type="text" autocomplete="off" class="login-input" name="instance_name">
+                </label>
 
-            <input type="submit" value="Create Instance">
-        </label>
+                <p>Instance type:</p>
+                <label class="login-input-content last">
+                    <select class="login-input" name="instance_type">
+                        {% for type in instance_types.keys() %}
+                            <option name="instance_type">{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+            </div>
+            <input type="submit" class="button" value="Create">
+        </div>
     </form>
 {% endblock %}
