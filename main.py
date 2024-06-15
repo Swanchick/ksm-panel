@@ -31,12 +31,12 @@ def instance(instance_id: int):
         return redirect("/")
 
     user_key = session["user_key"]
-
     response = panel.connector.get_instance(user_key, int(instance_id))
+
     if response["status"] == 403:
         return redirect("/")
 
-    return render_template("instance/instance.html", instance_data=response["instance_data"])
+    return render_template("instance/instance.html", instance_data=response["instance"])
 
 
 @app.route("/instance/<instance_id>/permissions/")
@@ -47,8 +47,12 @@ def instance_permission(instance_id: int):
     user_key = session["user_key"]
 
     user_permissions = panel.connector.get_user_permissions(user_key, int(instance_id))
+    print(user_permissions)
     permissions = panel.connector.get_permissions(user_key)
+    print(permissions)
     users = panel.connector.get_users(user_key)
+    print(users)
+
     if user_permissions["status"] == 403 or permissions["status"] == 403 or user_permissions["status"] == 403:
         return redirect(f"/instance/{instance_id}/")
 
@@ -73,6 +77,8 @@ def instance_permission_add(instance_id: int):
     permission_id = int(data["permission_id"])
 
     response = panel.connector.add_permission(user_key, instance_id, user_id, permission_id)
+
+    print(response)
 
     return response
 
@@ -157,7 +163,7 @@ def authorization():
         response = panel.connector.user_authorization(username, password)
 
         if response["status"] == 200:
-            user_key = response["user_data"]["key"]
+            user_key = response["key"]
             session["user_key"] = user_key
 
             return redirect("/")
@@ -175,27 +181,7 @@ def create_instance():
     if response["status"] != 200:
         return redirect("/")
 
-    user = response["user"]
-
-    if user["is_administrator"] is False:
-        return redirect("/")
-
-    instance_types = panel.connector.get_instance_types()
-
-    if request.method == "POST":
-        form = request.form
-
-        instance_name = form.get("instance_name")
-        if instance_name != "":
-            instance_type = form.get("instance_type")
-
-            response = panel.connector.create_instance(user_key, instance_name, instance_type)
-            print(response)
-
-            if response["status"] == 200:
-                return redirect("/")
-
-    return render_template("instance_editor.html", instance_types=instance_types["instance_types"])
+    return render_template("instance_editor.html")
 
 
 @app.route("/instance/<instance_id>/folders/")
@@ -219,8 +205,11 @@ def instance_folder(instance_id: int):
             while folder in folder_path:
                 folder_path.remove(folder)
 
+        path = "/".join(folder_path[:-1])
+        last_slash = "/" if len(folder_path) != 0 else ""
+
         return redirect(
-            f"/instance/{instance_id}/folders/?path=/{"/".join(folder_path[:-1])}{"/" if len(folder_path) != 0 else ""}"
+            f"/instance/{instance_id}/folders/?path=/{path}{last_slash}"
         )
 
     response = panel.connector.get_folders(user_key, int(instance_id), folder_path)

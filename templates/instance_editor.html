@@ -21,16 +21,6 @@
                 <label class="login-input-content">
                     <input type="text" autocomplete="off" class="login-input" name="instance_name">
                 </label>
-
-                <p>Instance type:</p>
-                <label class="login-input-content last">
-                    <select class="login-input" name="instance_type">
-                        {% for type in instance_types.keys() %}
-                            <option name="instance_type">{{ type }}</option>
-                        {% endfor %}
-                    </select>
-                </label>
-
             </div>
             <input type="submit" class="button" value="Create">
         </div>

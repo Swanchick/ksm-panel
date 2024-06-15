@@ -14,8 +14,7 @@ class InstancePermission:
 
     def __get_permissions(self, user_id: int) -> Dict:
         for user_permission in self.__user_permissions:
-            if user_id == user_permission["user"]["user_id"]:
-                print(user_permission)
+            if user_id == user_permission["user_id"]:
 
                 return user_permission["permissions"]
 

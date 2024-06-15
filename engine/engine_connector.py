@@ -11,7 +11,15 @@ class EngineConnector(Connector):
         self.__engine_password = engine_password
 
     def get_instances(self, user_key: str) -> Optional[Dict]:
-        response = self.send(self.__engine_password, user_key, "instance_data", {}, "instance", "get")
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {},
+            "instance",
+            "manager",
+            "get"
+        )
 
         return response
 
@@ -19,22 +27,11 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"instance_id": instance_id},
+            "data",
+            {"instance_id": instance_id, "args": []},
             "instance",
-            "get_instance"
-        )
-
-        return response
-
-    def get_instance_types(self):
-        response = self.send(
-            self.__engine_password,
-            "",
-            "instance_types",
-            {},
-            "instance",
-            "types"
+            "call",
+            "get"
         )
 
         return response
@@ -43,8 +40,8 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"name": instance_name, "instance_type": instance_type},
+            "data",
+            {"name": instance_name, "docker_image": instance_type},
             "instance",
             "create"
         )
@@ -55,8 +52,8 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"instance_id": instance_id},
+            "data",
+            {"instance_id": instance_id, "args": []},
             "instance",
             "call",
             "get_output"
@@ -68,10 +65,11 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {},
-            "permission",
-            "get"
+            "instance",
+            "manager",
+            "get_permissions"
         )
 
         return response
@@ -80,8 +78,8 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"instance_id": instance_id},
+            "data",
+            {"instance_id": instance_id, "args": []},
             "instance",
             "call",
             "get_permissions"
@@ -93,11 +91,11 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [command]},
             "instance",
             "call",
-            "server_send"
+            "send"
         )
 
         return response
@@ -106,11 +104,11 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"instance_id": instance_id},
+            "data",
+            {"instance_id": instance_id, "args": []},
             "instance",
             "call",
-            "server_start"
+            "start"
         )
 
         return response
@@ -119,11 +117,11 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"instance_id": instance_id},
+            "data",
+            {"instance_id": instance_id, "args": []},
             "instance",
             "call",
-            "server_stop"
+            "stop"
         )
 
         return response
@@ -132,8 +130,8 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
-            {"instance_id": instance_id, "args": [user_id, permission]},
+            "data",
+            {"instance_id": int(instance_id), "args": [user_id, permission]},
             "instance",
             "call",
             "add_permission"
@@ -145,7 +143,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [user_id, permission]},
             "instance",
             "call",
@@ -158,10 +156,10 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {},
             "user",
-            "get"
+            "get_users"
         )
 
         return response
@@ -170,7 +168,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "",
+            "data",
             {},
             "user",
             "get_user"
@@ -182,13 +180,13 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             "",
-            "user_data",
+            "data",
             {
-                "name": username,
+                "username": username,
                 "password": password
             },
             "user",
-            "authorization"
+            "authenticate_user"
         )
 
         return response
@@ -197,7 +195,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": folder_path},
             "instance",
             "call",
@@ -210,7 +208,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [file_name] + file_path},
             "instance",
             "call",
@@ -223,7 +221,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [file_name, file_data] + file_path},
             "instance",
             "call",
@@ -236,7 +234,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [file_name] + file_path},
             "instance"
             "call",
@@ -249,7 +247,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [file_name] + file_path},
             "instance"
             "call",
@@ -262,7 +260,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [file_name] + file_path},
             "instance"
             "call",
@@ -275,7 +273,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "instance_data",
+            "data",
             {"instance_id": instance_id, "args": [file_name] + file_path},
             "instance"
             "call",
@@ -288,7 +286,7 @@ class EngineConnector(Connector):
         response = self.send(
             self.__engine_password,
             user_key,
-            "user_data",
+            "data",
             {
                 "name": user_name,
                 "password": password,

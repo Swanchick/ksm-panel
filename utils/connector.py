@@ -32,7 +32,9 @@ class Connector(ABC):
         return loads(decrypted_json)
 
     def __build_route(self, methods: Tuple[str, ...]):
-        return f"http://{self.__host}:{self.__port}/api/{"/".join(methods)}"
+        route = "/".join(methods)
+
+        return f"http://{self.__host}:{self.__port}/api/{route}"
 
     def send(self, engine_password: str, user_key: str, data_name: str, data: dict, *methods: str) -> Optional[Dict]:
         url = self.__build_route(methods)
