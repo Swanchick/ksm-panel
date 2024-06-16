@@ -92,7 +92,7 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": [command]},
+            {"instance_id": int(instance_id), "args": [command]},
             "instance",
             "call",
             "send"
@@ -105,7 +105,7 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": []},
+            {"instance_id": int(instance_id), "args": []},
             "instance",
             "call",
             "start"
@@ -118,7 +118,7 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": []},
+            {"instance_id": int(instance_id), "args": []},
             "instance",
             "call",
             "stop"
@@ -310,6 +310,123 @@ class EngineConnector(Connector):
             },
             "user",
             "create"
+        )
+
+        return response
+
+    def get_arguments(self, user_key: str, instance_id: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"instance_id": int(instance_id), "args": []},
+            "instance",
+            "call",
+            "get_arguments"
+        )
+
+        return response
+
+    def add_argument(self, user_key: str, instance_id: int, argument: str):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"instance_id": int(instance_id), "args": [argument]},
+            "instance",
+            "call",
+            "add_argument"
+        )
+
+        return response
+
+    def delete_argument(self, user_key: str, instance_id: int, argument_id: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"instance_id": int(instance_id), "args": [argument_id]},
+            "instance",
+            "call",
+            "remove_argument"
+        )
+
+        return response
+
+    def get_ports(self, user_key: str):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {},
+            "instance",
+            "manager",
+            "get_ports"
+        )
+
+        return response
+
+    def unpin_port(self, user_key: str, port: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"port": int(port)},
+            "instance",
+            "manager",
+            "unpin_port"
+        )
+
+        return response
+
+    def delete_port(self, user_key: str, port: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"port": int(port)},
+            "instance",
+            "manager",
+            "delete_port"
+        )
+
+        return response
+
+    def add_port(self, user_key: str, port: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"port": int(port)},
+            "instance",
+            "manager",
+            "create_port"
+        )
+
+        return response
+
+    def get_port(self, user_key: str, instance_id: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"instance_id": int(instance_id), "args": []},
+            "instance",
+            "call",
+            "get_port"
+        )
+
+        return response
+
+    def change_port(self, user_key: str, instance_id: int, port: int):
+        response = self.send(
+            self.__engine_password,
+            user_key,
+            "data",
+            {"instance_id": int(instance_id), "args": [int(port)]},
+            "instance",
+            "call",
+            "pin_port"
         )
 
         return response

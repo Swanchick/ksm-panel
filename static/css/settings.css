@@ -1,0 +1,47 @@
+.arguments {
+    width: 100%;
+    background-color: #261C2C;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+p {
+    font-size: 18px;
+}
+
+input {
+    width: 80%;
+    background-color: #5C527F;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    appearance: none;
+    padding: 10px 20px;
+    color: #FFFFFF;
+    font-size: 18px;
+
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.inline {
+    display: flex;
+
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button {
+    width: 10%;
+}
+
+.button:hover {
+    background-color: #6E85B2;
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+}
+
+.unpin-port {
+    margin-right: 10px;
+}

@@ -346,7 +346,134 @@ def settings():
     if not response["user"]["is_administrator"]:
         return redirect("/")
 
-    return render_template("settings.html")
+    response = panel.connector.get_ports(user_key)
+    if response["status"] != 200:
+        return redirect("/")
+
+    print(response)
+
+    ports = response["ports"]
+
+    return render_template("settings.html", ports=ports, enumerate=enumerate)
+
+
+@app.route("/instance/<instance_id>/settings/")
+def instance_settings(instance_id):
+    if "user_key" not in session:
+        return redirect("/")
+
+    user_key = session["user_key"]
+
+    response_arguments = panel.connector.get_arguments(user_key, instance_id)
+    arguments = response_arguments["arguments"]
+
+    response_port = panel.connector.get_port(user_key, instance_id)
+    port = response_port["port"]
+
+    response_ports = panel.connector.get_ports(user_key)
+    ports = response_ports["ports"]
+
+    return render_template(
+        "instance/settings.html",
+        instance_id=instance_id,
+        arguments=arguments,
+        enumerate=enumerate,
+        port=port,
+        ports=ports
+    )
+
+
+@app.route("/instance/<instance_id>/call/add_argument/", methods=["POST"])
+def add_argument(instance_id: int):
+    if "user_key" not in session:
+        return {}
+
+    user_key = session["user_key"]
+
+    data = request.json
+    argument = data["argument"]
+
+    if argument is None or argument == "":
+        return {}
+
+    response = panel.connector.add_argument(user_key, instance_id, argument)
+
+    return response
+
+
+@app.route("/instance/<instance_id>/call/delete_argument/", methods=["POST"])
+def delete_argument(instance_id: int):
+    if "user_key" not in session:
+        return {}
+
+    data = request.json
+    argument_id = data["argument_id"]
+
+    user_key = session["user_key"]
+
+    response = panel.connector.delete_argument(user_key, instance_id, argument_id)
+
+    return response
+
+
+@app.route("/instance/<instance_id>/call/change_port/", methods=["POST"])
+def change_port(instance_id: int):
+    if "user_key" not in session:
+        return {}
+
+    data = request.json
+    port = data["port"]
+
+    user_key = session["user_key"]
+
+    response = panel.connector.change_port(user_key, instance_id, port)
+
+    return response
+
+
+@app.route("/settings/call/unpin_port/", methods=["POST"])
+def unpin_port():
+    if "user_key" not in session:
+        return {}
+
+    data = request.json
+    port = data["port"]
+
+    user_key = session["user_key"]
+
+    response = panel.connector.unpin_port(user_key, port)
+
+    return response
+
+
+@app.route("/settings/call/delete_port/", methods=["POST"])
+def delete_port():
+    if "user_key" not in session:
+        return {}
+
+    data = request.json
+    port = data["port"]
+
+    user_key = session["user_key"]
+
+    response = panel.connector.delete_port(user_key, port)
+
+    return response
+
+
+@app.route("/settings/call/add_port/", methods=["POST"])
+def add_port():
+    if "user_key" not in session:
+        return {}
+
+    data = request.json
+    port = data["port"]
+
+    user_key = session["user_key"]
+
+    response = panel.connector.add_port(user_key, port)
+
+    return response
 
 
 if __name__ == "__main__":

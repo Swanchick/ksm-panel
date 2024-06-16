@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+
+{% block title %}Settings{% endblock %}
+{% block instances %}Settings{% endblock %}
+
+{% block header_buttons %}
+    <a href="/instance/{{ instance_id }}/console/">Console</a>
+    <a href="/instance/{{ instance_id }}/permissions/">User permissions</a>
+    <a href="/instance/{{ instance_id }}/settings">Instance Settings</a>
+    <a href="/instance/{{ instance_id }}/folders/?path=/">Folders/Files</a>
+{% endblock %}
+
+{% block main %}
+    <input type="hidden" id="instance_id" value="{{ instance_id }}">
+
+    <h1>Arguments:</h1>
+    <div class="arguments">
+        {% for index, argument in enumerate(arguments) %}
+            <div class="inline">
+                <p>{{ index + 1 }}. {{ argument["argument"] }}</p>
+                <a href="#" id="{{ argument["argument_id"] }}" class="delete">Delete</a>
+            </div>
+        {% endfor %}
+        <div class="inline">
+            <input type="text" id="input-argument" autocomplete="off">
+            <input type="submit" id="send-argument" class="button" value="Add">
+        </div>
+    </div>
+
+    <h1>Port:</h1>
+    <p>Current port is: {{ port }}</p>
+
+    <div class="inline">
+        <select name="instance-ports" id="instance-ports">
+            {% for _port in ports %}
+                {% if _port["instance_id"] == None %}
+                    <option name="instance-ports">{{ _port["port"] }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+
+        <a href="#" id="change-port">Change port</a>
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

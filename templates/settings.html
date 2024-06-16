@@ -1,12 +1,43 @@
 {% extends "base.html" %}
 
 {% block stylesheets %}
-
+    <link rel= "stylesheet" type="text/css" href="{{ url_for('static', filename='css/settings.css') }}">
 {% endblock %}
 
 {% block title %}Settings{% endblock %}
 {% block instances %}Settings{% endblock %}
 
 {% block main %}
+    <div class="arguments">
+        <div class="inline">
+            <p>index</p>
+            <p>port</p>
+            <p>instance_id</p>
+            <div class="inline">
+                <a></a>
+                <a></a>
+            </div>
 
+        </div>
+
+        {% for index, port in enumerate(ports) %}
+            <div class="inline">
+                <p>{{ index + 1 }}.</p>
+                <p>{{ port["port"] }}</p>
+                <p>{{ port["instance_id"] }}</p>
+                <div class="inline">
+                    <a href="#" id="{{ port["port"] }}" class="unpin-port">Unpin</a>
+                    <a href="#" id="{{ port["port"] }}" class="delete-port">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="inline">
+            <input type="text" id="input-port" autocomplete="off">
+            <input type="submit" id="send-port" class="button" value="Add">
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
 {% endblock %}
