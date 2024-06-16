@@ -47,11 +47,8 @@ def instance_permission(instance_id: int):
     user_key = session["user_key"]
 
     user_permissions = panel.connector.get_user_permissions(user_key, int(instance_id))
-    print(user_permissions)
     permissions = panel.connector.get_permissions(user_key)
-    print(permissions)
     users = panel.connector.get_users(user_key)
-    print(users)
 
     if user_permissions["status"] == 403 or permissions["status"] == 403 or user_permissions["status"] == 403:
         return redirect(f"/instance/{instance_id}/")
@@ -181,6 +178,17 @@ def create_instance():
     if response["status"] != 200:
         return redirect("/")
 
+    if not response["user"]["is_administrator"]:
+        return redirect("/")
+
+    if request.method == "POST":
+        form = request.form
+        instance_name = form.get("instance_name")
+        instance_docker_image = form.get("instance_docker_image")
+        panel.connector.create_instance(user_key, instance_name, instance_docker_image)
+
+        return redirect("/")
+
     return render_template("instance_editor.html")
 
 
@@ -284,6 +292,22 @@ def user_create():
                 return redirect("/")
 
     return render_template("user.html")
+
+
+@app.route("/settings/")
+def settings():
+    if "user_key" not in session:
+        return redirect("/")
+
+    user_key = session["user_key"]
+    response = panel.connector.get_user(user_key)
+    if response["status"] != 200:
+        return redirect("/")
+
+    if not response["user"]["is_administrator"]:
+        return redirect("/")
+
+    return render_template("settings.html")
 
 
 if __name__ == "__main__":

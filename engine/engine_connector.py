@@ -36,12 +36,12 @@ class EngineConnector(Connector):
 
         return response
 
-    def create_instance(self, user_key: str, instance_name: str, instance_type: str) -> Optional[Dict]:
+    def create_instance(self, user_key: str, instance_name: str, instance_docker_image: str) -> Optional[Dict]:
         response = self.send(
             self.__engine_password,
             user_key,
             "data",
-            {"name": instance_name, "docker_image": instance_type},
+            {"name": instance_name, "docker_image": instance_docker_image},
             "instance",
             "create"
         )
@@ -171,7 +171,7 @@ class EngineConnector(Connector):
             "data",
             {},
             "user",
-            "get_user"
+            "get"
         )
 
         return response
