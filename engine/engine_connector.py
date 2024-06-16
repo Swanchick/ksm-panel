@@ -43,6 +43,7 @@ class EngineConnector(Connector):
             "data",
             {"name": instance_name, "docker_image": instance_docker_image},
             "instance",
+            "manager",
             "create"
         )
 

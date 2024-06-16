@@ -398,6 +398,8 @@ def add_argument(instance_id: int):
 
     response = panel.connector.add_argument(user_key, instance_id, argument)
 
+    print(response)
+
     return response
 
 
