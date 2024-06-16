@@ -9,9 +9,10 @@
 {% block instances %}Permissions{% endblock %}
 
 {% block header_buttons %}
-    <a href="/instance/{{ instance_id }}">Main</a>
-    <a href="#">Instance</a>
-    <a href="#">Folders/Files</a>
+    <a href="/instance/{{ instance_id }}/console/">Console</a>
+    <a href="/instance/{{ instance_id }}/permissions/">User permissions</a>
+    <a href="/instance/{{ instance_id }}/settings">Instance Settings</a>
+    <a href="/instance/{{ instance_id }}/folders/?path=/">Folders/Files</a>
 {% endblock %}
 
 {% block main %}

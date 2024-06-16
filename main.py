@@ -27,6 +27,16 @@ def main():
 
 @app.route("/instance/<instance_id>/")
 def instance(instance_id: int):
+    return redirect(f"/instance/{instance_id}/console/")
+
+
+@app.route("/instance/")
+def instance_blank():
+    return redirect("/")
+
+
+@app.route("/instance/<instance_id>/console/")
+def instance_console(instance_id: int):
     if "user_key" not in session:
         return redirect("/")
 
@@ -36,7 +46,10 @@ def instance(instance_id: int):
     if response["status"] == 403:
         return redirect("/")
 
-    return render_template("instance/instance.html", instance_data=response["instance"])
+    if response["status"] != 200:
+        return redirect("/")
+
+    return render_template("instance/console.html", instance_data=response["instance"])
 
 
 @app.route("/instance/<instance_id>/permissions/")
@@ -75,7 +88,8 @@ def instance_permission_add(instance_id: int):
 
     response = panel.connector.add_permission(user_key, instance_id, user_id, permission_id)
 
-    print(response)
+    if response["status"] != 200:
+        return redirect("/")
 
     return response
 
@@ -93,6 +107,9 @@ def instance_permission_remove(instance_id: int):
 
     response = panel.connector.remove_permission(user_key, instance_id, user_id, permission_id)
 
+    if response["status"] != 200:
+        return redirect("/")
+
     return response
 
 
@@ -104,6 +121,9 @@ def instance_get_output(instance_id: int):
     user_key = session["user_key"]
 
     response = panel.connector.get_output(user_key, int(instance_id))
+
+    if response["status"] != 200:
+        return redirect("/")
 
     return response
 
@@ -192,7 +212,7 @@ def create_instance():
     return render_template("instance_editor.html")
 
 
-@app.route("/instance/<instance_id>/folders/")
+@app.route("/instance/<instance_id>/folders/", methods=["GET", "POST"])
 def instance_folder(instance_id: int):
     if "user_key" not in session:
         return redirect(f"/instance/{instance_id}/")
@@ -219,6 +239,28 @@ def instance_folder(instance_id: int):
         return redirect(
             f"/instance/{instance_id}/folders/?path=/{path}{last_slash}"
         )
+
+    if request.method == "POST":
+        data = request.json
+        method = data["method"]
+        name = data["name"]
+
+        response = {}
+
+        if method == "file":
+            response = panel.connector.create_file(user_key, instance_id, name, folder_path)
+        elif method == "folder":
+            response = panel.connector.create_folder(user_key, instance_id, name, folder_path)
+        elif method == "remove":
+            print("Hello World")
+            t = data["type"].split("/")[-1]
+
+            if t == "file":
+                response = panel.connector.delete_file(user_key, instance_id, name, folder_path)
+            elif t == "folder":
+                response = panel.connector.delete_folder(user_key, instance_id, name, folder_path)
+
+        return response, 200
 
     response = panel.connector.get_folders(user_key, int(instance_id), folder_path)
     if response["status"] != 200:
@@ -249,8 +291,6 @@ def instance_file(instance_id: int, file_name: str):
         while folder in folder_path:
             folder_path.remove(folder)
 
-    print(folder_path)
-
     if request.method == "POST":
         data = request.json
         file_data = data["file_data"]
@@ -260,7 +300,6 @@ def instance_file(instance_id: int, file_name: str):
         return response
 
     response = panel.connector.open_file(user_key, int(instance_id), file_name, folder_path)
-    print(response)
 
     if response["status"] != 200:
         return redirect(f"/instance/{instance_id}/")

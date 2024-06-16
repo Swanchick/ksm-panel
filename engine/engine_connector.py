@@ -235,8 +235,11 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": [file_name] + file_path},
-            "instance"
+            {
+                "instance_id": int(instance_id),
+                "args": [file_name] + file_path
+            },
+            "instance",
             "call",
             "create_file"
         )
@@ -248,8 +251,11 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": [file_name] + file_path},
-            "instance"
+            {
+                "instance_id": int(instance_id),
+                "args": [file_name] + file_path
+            },
+            "instance",
             "call",
             "create_folder"
         )
@@ -261,24 +267,34 @@ class EngineConnector(Connector):
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": [file_name] + file_path},
-            "instance"
+            {
+                "instance_id": int(instance_id),
+                "args": [file_name] + file_path
+            },
+            "instance",
             "call",
-            "create_folder"
+            "delete_file"
         )
+
+        print(response)
 
         return response
 
-    def delete_folder(self, user_key: str, instance_id: int, file_name: str, file_path: List[str]) -> Dict:
+    def delete_folder(self, user_key: str, instance_id: int, folder_name: str, file_path: List[str]) -> Dict:
         response = self.send(
             self.__engine_password,
             user_key,
             "data",
-            {"instance_id": instance_id, "args": [file_name] + file_path},
-            "instance"
+            {
+                "instance_id": int(instance_id),
+                "args": file_path + [folder_name]
+            },
+            "instance",
             "call",
             "delete_folder"
         )
+
+        print(response)
 
         return response
 

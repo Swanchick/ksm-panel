@@ -8,16 +8,22 @@
 {% block instances %}Folders{% endblock %}
 
 {% block header_buttons %}
-    <a href="/instance/{{ instance_id }}/permissions">User permissions</a>
-    <a href="#">Instance</a>
-    <a href="/instance/{{ instance_id }}/">Main</a>
+    <a href="/instance/{{ instance_id }}/console/">Console</a>
+    <a href="/instance/{{ instance_id }}/permissions/">User permissions</a>
+    <a href="/instance/{{ instance_id }}/settings">Instance Settings</a>
+    <a href="/instance/{{ instance_id }}/folders/?path=/">Folders/Files</a>
 {% endblock %}
 
 {% block main %}
     <input type="hidden" id="instance_id" value="{{ instance_id }}">
 
     <div class="folders">
-        <div class="file_but">
+        <div class="file_button">
+            <a href="#" id="create-folder">Create folder</a>
+            <a href="#" id="create-file">Create file</a>
+        </div>
+
+        <div class="file_button">
             <a href="/instance/{{ instance_id }}/folders/?path={{ "/".join(folder_path) }}/.." class="folder">..</a>
         </div>
 
@@ -33,7 +39,7 @@
                     {% endif %}
                 </div>
 
-                <a href="#" id={{ file["file_name"] }}>Delete</a>
+                <a href="{{ "folder" if file["file_type"] == 1 else "file" }}" class="delete-button" id={{ file["file_name"] }}>Delete</a>
             </div>
         {% endfor %}
     </div>
